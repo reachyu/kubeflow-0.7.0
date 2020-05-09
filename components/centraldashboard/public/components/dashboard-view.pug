@@ -1,0 +1,37 @@
+div#grid
+    .column
+        paper-card#Quick-Links(heading='快捷入口')
+            template(is='dom-repeat', items='[[quickLinks]]')
+                iframe-link.link(href$="[[item.link]]")
+                    paper-icon-item
+                        iron-icon(icon='kubeflow:bolt', slot='item-icon')
+                        paper-item-body(two-line)
+                            .header [[item.text]]
+                            aside(secondary) [[item.desc]]
+                        paper-ripple
+        template(is='dom-if', if='[[platformDetails.resourceChartsLink]]')
+            resource-chart(header-text='Cluster CPU Utilization', metric='cpu',
+                interval='Last60m',
+                external-link='[[platformDetails.resourceChartsLink]]',
+                external-link-text='[[platformDetails.resourceChartsLinkText]]')
+            resource-chart(header-text='Pod CPU Utilization', metric='podcpu',
+                interval='Last60m',
+                external-link='[[platformDetails.resourceChartsLink]]'
+                external-link-text='[[platformDetails.resourceChartsLinkText]]')
+    .column
+        notebooks-card(namespace='[[namespace]]')
+        pipelines-card(heading='最近工作流记录', artifact-type='pipelines')
+        pipelines-card(heading='最近工作流实例记录', artifact-type='runs')
+    .column
+        template(is='dom-if', if='[[platformDetails.links]]')
+            paper-card#Platform-Links(class$='[[platformDetails.name]]',
+                heading='[[platformDetails.title]]', image='[[platformDetails.logo]]')
+                template(is='dom-repeat', items='[[platformDetails.links]]')
+                    a.link(href$='[[item.link]]', tabindex='-1', target='_blank')
+                        paper-icon-item.external
+                            paper-ripple
+                            paper-item-body(two-line)
+                                .header [[item.headerText]]
+                                aside(secondary) [[item.secondaryText]]
+                            paper-icon-button.button(icon='open-in-new',
+                                slot='item-icon', alt='[[item.text]]', tabindex=-1)

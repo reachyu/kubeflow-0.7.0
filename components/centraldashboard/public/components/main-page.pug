@@ -1,0 +1,65 @@
+iron-ajax(auto, url='/api/workgroup/exists', handle-as='json',
+    on-response='_onHasWorkgroupResponse', on-error='_onHasWorkgroupError', loading='{{pageLoading}}')
+iron-ajax#envInfo(auto='[[_shouldFetchEnv]]', url='/api/workgroup/env-info', handle-as='json',
+    on-response='_onEnvInfoResponse')
+aside#PageLoader(hidden='{{!pageLoading}}')
+app-drawer-layout.flex(narrow='{{narrowMode}}',
+        force-narrow='[[or(inIframe, thinView, notFoundInIframe, hideSidebar)]]',
+        bleed$='[[sidebarBleed]]')
+    app-location(route='{{route}}', query-params='{{queryParams}}')
+    app-route(route='{{route}}', pattern='/:page', data='{{routeData}}',
+        tail='{{subRouteData}}')
+    app-drawer#MainDrawer(slot='drawer')
+
+        iron-selector.flex(selected='{{sidebarItemIndex}}')
+            a(href$='[[buildHref("/", queryParams)]]', tabindex='-1')
+                paper-item.menu-item 首页
+            template(is='dom-repeat', items='[[menuLinks]]')
+                iframe-link(href$="[[buildHref(item.link, queryParams)]]")
+                    paper-item.menu-item [[item.text]]
+            template(is='dom-if', if='[[equals(isolationMode, "multi-user")]]')
+                aside.divider
+                a(href$='[[buildHref("/manage-users", queryParams)]]', tabindex='-1')
+                    paper-item.menu-item Manage Contributors
+    app-header-layout(fullbleed)
+        app-header(slot='header', hides, hidden$='[[notFoundInIframe]]')
+            app-toolbar
+                aside#Narrow-Slider(hides, hidden$='[[!narrowMode]]')
+                    paper-icon-button#Menu(icon='menu', drawer-toggle)
+
+                namespace-selector#NamespaceSelector(
+                    query-params='{{queryParams}}', namespaces='[[namespaces]]'
+                    selected='{{namespace}}', hides, hidden$='[[hideNamespaces]]'
+                    all-namespaces='[[allNamespaces]]')
+                footer#User-Badge
+                    iron-image.image(sizing='contain', fade,
+                        src='/assets/anon-user.png', title='[[user]]')
+        main#Content
+            section#ViewTabs(hidden$='[[hideTabs]]')
+                paper-tabs(selected='[[page]]', attr-for-selected='page')
+                    paper-tab(page='dashboard', link)
+                        a.link(tabindex='-1', href$='[[buildHref("/", queryParams)]]') 仪表板
+                    paper-tab(page='activity', link)
+                        a.link(tabindex='-1', href$='[[buildHref("/activity", queryParams)]]') 事件
+            neon-animated-pages(selected='[[page]]', attr-for-selected='page',
+                                entry-animation='fade-in-animation',
+                                exit-animation='fade-out-animation')
+                neon-animatable(page='dashboard')
+                    dashboard-view(namespace='[[namespace]]',
+                        platform-info='[[platformInfo]]')
+                neon-animatable(page='activity')
+                    activity-view(namespace='[[queryParams.ns]]')
+                neon-animatable(page='manage-users')
+                    manage-users-view(user='[[user]]', namespaces='[[namespaces]]', is-cluster-admin='[[isClusterAdmin]]', owned-namespace='[[ownedNamespace]]')
+                neon-animatable(page='iframe')
+                    iframe-container(namespace='[[namespace]]',
+                        src='[[iframeSrc]]', page="{{iframePage}}")
+                neon-animatable(page='not_found')
+                    not-found-view(path="[[route.path]]")
+    iron-media-query(query='(max-width: 900px)', query-matches='{{sidebarBleed}}')
+    iron-media-query(query='(max-width: 1270px)', query-matches='{{thinView}}')
+paper-toast#welcomeUser(duration=5000) Welcome, [[_extractLdap(user)]]!
+paper-toast#ErrorToast(duration=0, opened='[[!empty(errorText)]]', on-click='closeError') [[errorText]]
+    paper-icon-button(icon='close')
+template(is='dom-if', if='[[registrationFlow]]')
+    registration-page(user-details='[[_extractLdap(user)]]' on-flowcomplete='resyncApp')
