@@ -1,5 +1,5 @@
 # 简介
-基于kubeflow0.7.0版本做的二次开发
+基于kubeflow0.7.0版本做的二次开发。Dashboard主要修改界面。
 
 # 修改文件列表
 * components\centraldashboard\public\index.html
