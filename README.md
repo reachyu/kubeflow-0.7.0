@@ -16,6 +16,7 @@
 
 # 效果
 * 修改前的页面
-![image](https://github.com/reachyu/kubeflow-0.7.0/blob/master/img/shy-old.jpg)
+![Image text](https://github.com/reachyu/kubeflow-0.7.0/blob/master/img/shy-old.jpg)
 * 修改后的页面
-![image](https://github.com/reachyu/kubeflow-0.7.0/blob/master/img/shy-new.jpg)
+![Image text](https://github.com/reachyu/kubeflow-0.7.0/blob/master/img/shy-new.jpg)
+
