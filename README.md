@@ -1,5 +1,6 @@
 # 简介
-基于kubeflow0.7.0版本做的二次开发
+* 基于kubeflow0.7.0版本做的二次开发。Dashboard主要修改界面。
+* 我的blog有相关文章：https://blog.csdn.net/reachyu
 
 # 修改文件列表
 * components\centraldashboard\public\index.html
