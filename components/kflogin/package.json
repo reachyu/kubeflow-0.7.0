@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.0",
     "axios": "^0.18.0",
-    "ecstatic": "^3.3.0",
+    "ecstatic": "^4.1.4",
     "install": "^0.12.2",
     "material-ui": "^0.20.2",
     "npm": "^6.6.0",
