@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "ecstatic": "^3.3.0",
     "install": "^0.12.2",
     "material-ui": "^0.20.2",
